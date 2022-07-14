@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Reported Posts{% endblock %}
+{% block main_title %} Reports page {% endblock %}
+
+{% block content %}
+<h1>reports page</h1>
+
+<div>
+    {% for post in reports  %}
+    <p>{{post}}</p><span>{% if post.hidden%}post hidden {% endif %}</span>
+    <p>User: {{post.user}}</p>
+
+    {% if not post.hidden %}
+     <a href="/hide_post/{{post.id}}">Hide post</a><br>
+    {% endif  %}
+
+    <a href="/delete/{{post.id}}">Delete post</a>
+    {%  if post.user.is_active%}
+<h2><a href="/Ban_user/{{post.user.id}}">Ban User</a></h2>
+    {%else%}
+    {% endif%}
+    {% endfor %}
+</div>
+{% endblock %}

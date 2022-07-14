@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block main_title %} Public Feed {% endblock %}
+{% block sub_title %} Leave a Message for everyone to See {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+<h1>Hello world</h1>
+
+{% if user.is_authenticated %}
+<form method="post">
+    {% csrf_token %}
+    <label>TEXT</label>
+    {{form.text}}
+    <br>
+    <input class="btn btn-info" type="submit" >
+    <br>
+</form>
+{% else %}
+<p><strong>Login to write post</strong></p>
+{% endif %}
+
+<div >
+    <h3>posts</h3>
+    {% if posts %}
+    {% for posts in posts %}
+    <div class="mb-1 bg-dark rounded">
+        <p class="text-white">written by: {{posts.user}}</p>
+         <P class="text-white">{{posts.text}}</P>
+        <small class="text-white">date added {{posts.date_posted}}</small>
+
+    </div>
+    <div style="margin-left:55vw;">
+        {% if posts.user == request.user %}
+        <a  class="btn-sm btn-danger " href="/delete/{{posts.id}}">Delete</a>
+        {% elif user.is_authenticated %}
+         <a href="{% url 'report_post' posts.id %}" >Report this post</a>
+        {% endif %}
+    </div>
+
+    {% endfor %}
+    {% else %}
+    <h2>No Posts </h2>
+    {% endif %}
+</div>
+{% endblock %}
+</body>
+</html>
